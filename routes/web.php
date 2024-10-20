@@ -1,11 +1,12 @@
 <?php
-
+use App\Http\Controllers\AlbumController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -38,6 +39,16 @@ Route::get('products/{id}', function(int$id) {
 Route::get('/contact', function() {
     return 'This page is our contact information';
 })->name('contact');
+
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/albums', [AlbumController::class, 'index'])->name('albums.index');
+
+
+Route::get('/albums/create', [AlbumController::class, 'create'])->name('albums.create');
+Route::post('/albums', [AlbumController::class, 'store'])->name('albums.store');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
 
 //"Controller Method (een controller met een speciefieke methode aan te roepen)
 //Route::get('/about-us', [PageController::class, 'aboutUs']);
