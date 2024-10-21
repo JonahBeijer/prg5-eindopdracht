@@ -1,6 +1,4 @@
 
-
-
 <form action="{{ route('albums.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="form-group">

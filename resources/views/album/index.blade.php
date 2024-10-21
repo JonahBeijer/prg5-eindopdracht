@@ -6,11 +6,10 @@
 <a href="{{route('albums.index')}}"> <h1>Albums</h1>
 </a>
 
-<!-- Filter formulier -->
 <form method="GET" action="{{ route('albums.index') }}">
     <label for="genre">Filter op genre:</label>
     <select name="genre" id="genre">
-        <option value="">-- Selecteer een genre --</option>
+        <option value=""> Selecteer een genre </option>
         @foreach ($genres as $genre)
             <option value="{{ $genre->id }}" {{ request('genre') == $genre->id ? 'selected' : '' }}>
                 {{ $genre->name }}
@@ -20,7 +19,7 @@
     <button type="submit">Filter</button>
 </form>
 
-<!-- Album lijst -->
+
 @foreach ($albums as $album)
     <div>
         <h2>{{ $album->album_name }}</h2>
