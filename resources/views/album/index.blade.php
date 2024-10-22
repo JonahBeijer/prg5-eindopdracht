@@ -28,7 +28,9 @@
         <p>Genre: {{ $album->genre ? $album->genre->name : 'Geen genre gevonden' }}</p> <!-- Zorg dat het genre bestaat -->
         <p>Release Date: {{ date('d-m-Y', strtotime($album->release_date)) }}</p>
         <p>Status: {{ $album->status }}</p>
-        <p>User ID: {{ $album->users_id }}</p>
+        <p>Post gemaakt door: {{$album->user->name}}</p>
+        <a href="{{ route('albums.edit', $album->id) }}">Edit</a>
+
     </div>
 @endforeach
 

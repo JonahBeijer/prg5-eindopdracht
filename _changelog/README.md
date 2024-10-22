@@ -14,5 +14,9 @@
 * we hebben in de les één op veel relaties en veel op veel relaties aan gemaakt met onze eigen eindproject.
 * en een create en index gemaakt voor je eigen project
 
-## 18-09
+## 21-09
 * heb zelf zelfstandig de les doorgenomen vanwege ik ziek was en heb een filter knop toegevoegt aan mijn project om te filteren op genres
+
+## 22-09
+* vandaag ben ik verder gegaan met de crud, had de create al af maar nog niet de edit maar die werkt nu we
+* De user_id is nu ook gekoppeld aan de account dus ik kan de namen zien van wie de posts heeft gemaakt

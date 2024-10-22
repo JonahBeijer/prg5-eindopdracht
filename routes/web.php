@@ -4,6 +4,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
@@ -28,8 +29,6 @@ Route::get('/about-us', function() {
 })->name('about-us');
 
 
-
-
 Route::get('products/{id}', function(int$id) {
     // We geven het id door aan een view
     return view('show-product', ['id' => $id]);
@@ -46,7 +45,19 @@ Route::get('/albums', [AlbumController::class, 'index'])->name('albums.index');
 
 Route::get('/albums/create', [AlbumController::class, 'create'])->name('albums.create');
 Route::post('/albums', [AlbumController::class, 'store'])->name('albums.store');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+
+Route::get('albums/{id}/edit', [AlbumController::class, 'edit'])->name('albums.edit');
+
+
+Route::put('albums/{id}', [AlbumController::class, 'update'])->name('albums.update');
+
+Route::patch('albums/{id}', [AlbumController::class, 'update'])->name('albums.update');
+
+Route::delete('albums/{id}', [AlbumController::class, 'destroy'])->name('albums.destroy');
+
 
 
 

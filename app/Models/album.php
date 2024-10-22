@@ -11,13 +11,22 @@ class album extends Model
         'genre_id',
         'release_date',
         'images',
+        'users_id'
     ];
 
     public function genre()
     {
         return $this->belongsTo(Genre::class);
     }
+
+    // In Album.php model
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'users_id'); // Zorg ervoor dat de naam overeenkomt met je kolom
+    }
+
 }
+
 
 
 

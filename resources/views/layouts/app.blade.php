@@ -17,5 +17,17 @@
 
     @yield('content')
 </div>
+
+<!-- In de navigatiebalk of menu -->
+<li>
+    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        Logout
+    </a>
+</li>
+
+<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+    @csrf
+</form>
+
 </body>
 </html>
