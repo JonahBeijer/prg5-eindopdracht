@@ -20,3 +20,4 @@
 ## 22-09
 * vandaag ben ik verder gegaan met de crud, had de create al af maar nog niet de edit maar die werkt nu we
 * De user_id is nu ook gekoppeld aan de account dus ik kan de namen zien van wie de posts heeft gemaakt
+* heb ook nog de edit afgemaakt en de delete. heb ook bij edit de knop alleen actief gezet als je dezelfde user_id hebt zodat je niet van iemand ander kan editen

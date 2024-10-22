@@ -98,6 +98,11 @@ class AlbumController extends Controller
         $album = Album::findOrFail($id); // Haal het album op
         $genres = Genre::all(); // Haal alle genres op
 
+        // Controleer of de ingelogde gebruiker de eigenaar van het album is
+        if ($album->users_id !== Auth::id()) {
+            return redirect()->route('albums.index')->with('error', 'Je hebt geen rechten om dit album te bewerken.');
+        }
+
         return view('albums.edit', compact('album', 'genres')); // Geef album en genres door naar de view
     }
 
@@ -109,35 +114,53 @@ class AlbumController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $album = Album::findOrFail($id);
+
+        // Controleer of de ingelogde gebruiker de eigenaar van het album is
+        if ($album->users_id !== Auth::id()) {
+            return redirect()->route('albums.index')->with('error', 'Je hebt geen rechten om dit album te bewerken.');
+        }
+
         $request->validate([
             'album_name',
             'artist_name',
-            'genre_id' ,
+            'genre_id',
             'release_date',
             'images'
         ]);
 
-        $album = Album::findOrFail($id);
+        $imagePath = $album->images; // Behoud de oude afbeelding
 
+        // Als er een nieuwe afbeelding wordt geüpload, sla die op
+        if ($request->hasFile('images')) {
+            $imagePath = $request->file('images')->store('images/albums', 'public');
+        }
 
         $album->update([
             'album_name' => $request->album_name,
             'artist_name' => $request->artist_name,
             'genre_id' => $request->genre_id,
             'release_date' => $request->release_date,
-            'images' => $request->file('images') ? $request->file('images')->store('albums') : $album->images, // Bewaar bestaande afbeelding als er geen nieuwe is
+            'images' => $imagePath, // Bewaar nieuwe afbeelding of behoud de oude
         ]);
 
         return redirect()->route('albums.index')->with('success', 'Album bijgewerkt.');
     }
 
+
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+        $album = Album::findOrFail($id);
+
+        // Verwijder het album
+        $album->delete();
+
+        return redirect()->route('albums.index')->with('success', 'Album succesvol verwijderd.');
     }
+
 
 
 }

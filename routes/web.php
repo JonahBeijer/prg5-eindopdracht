@@ -50,10 +50,7 @@ Route::post('/albums', [AlbumController::class, 'store'])->name('albums.store');
 
 
 Route::get('albums/{id}/edit', [AlbumController::class, 'edit'])->name('albums.edit');
-
-
 Route::put('albums/{id}', [AlbumController::class, 'update'])->name('albums.update');
-
 Route::patch('albums/{id}', [AlbumController::class, 'update'])->name('albums.update');
 
 Route::delete('albums/{id}', [AlbumController::class, 'destroy'])->name('albums.destroy');

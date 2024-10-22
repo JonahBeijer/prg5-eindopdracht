@@ -44,5 +44,13 @@
         @endif
     </div>
     <button type="submit">Update Album</button >
+    <form action="{{ route('albums.destroy', $album->id) }}" method="POST" onsubmit="return confirm('Weet je zeker dat je dit album wilt verwijderen?');">
+        @csrf
+        @method('DELETE')
+
+        <button type="submit" class="btn btn-danger">Verwijder Album</button>
+    </form>
+
+
 
 </form>

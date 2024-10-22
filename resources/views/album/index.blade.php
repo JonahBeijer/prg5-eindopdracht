@@ -25,14 +25,18 @@
         <h2>{{ $album->album_name }}</h2>
         <img src="{{ asset('storage/' . $album->images) }}" alt="{{ $album->album_name }}" width="150">
         <p>Artist: {{ $album->artist_name }}</p>
-        <p>Genre: {{ $album->genre ? $album->genre->name : 'Geen genre gevonden' }}</p> <!-- Zorg dat het genre bestaat -->
+        <p>Genre: {{ $album->genre ? $album->genre->name : 'Geen genre gevonden' }}</p>
         <p>Release Date: {{ date('d-m-Y', strtotime($album->release_date)) }}</p>
         <p>Status: {{ $album->status }}</p>
-        <p>Post gemaakt door: {{$album->user->name}}</p>
-        <a href="{{ route('albums.edit', $album->id) }}">Edit</a>
+        <p>Post gemaakt door: {{ $album->user->name }}</p>
 
+        <!-- Controleer of de ingelogde gebruiker de eigenaar is -->
+        @if ($album->users_id === Auth::id())
+            <a href="{{ route('albums.edit', $album->id) }}" class="btn btn-primary">Edit</a>
+        @endif
     </div>
 @endforeach
+
 
 </body>
 </html>
