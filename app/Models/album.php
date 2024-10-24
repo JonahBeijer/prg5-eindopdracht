@@ -19,11 +19,12 @@ class album extends Model
         return $this->belongsTo(Genre::class);
     }
 
-    // In Album.php model
+    // In je Album model
     public function user()
     {
-        return $this->belongsTo(User::class, 'users_id'); // Zorg ervoor dat de naam overeenkomt met je kolom
+        return $this->belongsTo(User::class, 'users_id'); // Zorg ervoor dat 'users_id' overeenkomt met de foreign key
     }
+
 
 }
 

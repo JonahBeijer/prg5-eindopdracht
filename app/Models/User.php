@@ -46,7 +46,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function user()
+    public function albums()
     {
         return $this->hasMany(user::class, 'users_id');
     }
