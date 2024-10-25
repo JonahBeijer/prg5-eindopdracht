@@ -25,6 +25,11 @@ class album extends Model
         return $this->belongsTo(User::class, 'users_id'); // Zorg ervoor dat 'users_id' overeenkomt met de foreign key
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
 
 }
 

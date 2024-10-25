@@ -2,8 +2,10 @@
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 
+require __DIR__.'/auth.php';
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,42 +21,28 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
 
 Route::get('/about-us', function() {
-    $company = 'Hogeschool Rotterdam';
-    return view('about-us', [
-        'company' => $company
-    ]);
 })->name('about-us');
 
-
-Route::get('products/{id}', function(int$id) {
-    // We geven het id door aan een view
-    return view('show-product', ['id' => $id]);
-})->name('show-product');
-
-
-Route::get('/contact', function() {
-    return 'This page is our contact information';
-})->name('contact');
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/albums', [AlbumController::class, 'index'])->name('albums.index');
 
 
-Route::get('/albums/create', [AlbumController::class, 'create'])->name('albums.create');
+Route::get('/albums/create', [AlbumController::class, 'create'])
+    ->name('albums.create')
+    ->middleware('auth');
+
 Route::post('/albums', [AlbumController::class, 'store'])->name('albums.store');
 
 Route::get('/albums/{id}', [AlbumController::class, 'show'])->name('albums.show');
-
-
+Route::post('/albums/{album}/comments', [CommentController::class, 'store'])->name('comments.store');
 
 
 Route::get('albums/{id}/edit', [AlbumController::class, 'edit'])->name('albums.edit');
 Route::put('albums/{id}', [AlbumController::class, 'update'])->name('albums.update');
 Route::patch('albums/{id}', [AlbumController::class, 'update'])->name('albums.update');
-
 Route::delete('albums/{id}', [AlbumController::class, 'destroy'])->name('albums.destroy');
 
 

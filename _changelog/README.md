@@ -26,3 +26,9 @@
 * ik ben vandaag bezig geweest met de admin rol en dat hij alles kan bewerken.
 * heb de search bar gemaakt en de show (details) page gemaakt
 * en heb een beetje meer vormgeving aan de site gegeven.
+
+## 25-10
+* heb een navbar gemaakt zodat ik beter naar verschillende pages kan
+* heb voor de create page een veiligheid gemaakt zodat als iemand zonder account er op wilt word hij door gestuurd naar de login als hij de url aanpast want heb de knop gewoon uitgezet voor mensen zonder account
+* een comment sectie gemaakt met een controller, model en de view staat in show en natuurlijk een tabel in de database
+* alle onnodige dingen die ik met opdrachte heb gemaakt in de les verwijderd zodat ik beter overzicht heb
