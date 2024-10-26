@@ -66,6 +66,7 @@ class AlbumController extends Controller
             'genre_id' ,
             'release_date' ,
             'images'=> 'required|image|mimes:jpeg,png,jpg,gif',
+            'caption',
 
         ]);
 
@@ -85,6 +86,8 @@ class AlbumController extends Controller
                 'release_date' => $request->input('release_date'),
                 'images' => $imagePath, // Sla het pad op in de database
                 'users_id' => Auth::id(), // Dit geeft de ingelogde gebruikers ID
+                'caption' => $request->input('caption'),
+
             ]);
 
             return redirect()->route('albums.index')->with('success', 'Album toegevoegd!');
@@ -151,7 +154,8 @@ class AlbumController extends Controller
             'artist_name' => 'required|string|max:255',
             'genre_id' => 'required|integer',
             'release_date' => 'required|date',
-            'images' => 'nullable|image|mimes:jpeg,png,jpg,gif', // 'nullable' voor het veld 'images'
+            'images' => 'nullable|image|mimes:jpeg,png,jpg,gif',// 'nullable' voor het veld 'images'
+            'caption' => 'required|string|max:255',
         ]);
 
         $imagePath = $album->images; // Behoud de oude afbeelding
@@ -168,6 +172,8 @@ class AlbumController extends Controller
             'genre_id' => $request->genre_id,
             'release_date' => $request->release_date,
             'images' => $imagePath, // Bewaar nieuwe afbeelding of behoud de oude
+            'caption' => $request->input('caption'),
+
         ]);
 
         return redirect()->route('albums.index')->with('success', 'Album bijgewerkt.');

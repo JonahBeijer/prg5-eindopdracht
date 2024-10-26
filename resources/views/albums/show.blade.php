@@ -7,7 +7,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <title>SpinShare</title>
 </head>
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-light  bg-white shadow-sm">
     <img src="{{ asset('storage/images/logo spinshare.png') }}" alt="SpinShare Logo" style="width: 150px; height: auto;">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -74,7 +74,9 @@
                     <p class="card-text"><strong>Artiest:</strong> {{ $album->artist_name }}</p>
                     <p class="card-text"><strong>Genre:</strong> {{ $album->genre ? $album->genre->name : 'Geen genre gevonden' }}</p>
                     <p class="card-text"><strong>Release Datum:</strong> {{ date('d-m-Y', strtotime($album->release_date)) }}</p>
-                    @if (Auth::check() && ($album->users_id === Auth::id() || Auth::user()->status == 1))
+                    <p class="card-text"><strong>Caption:</strong> {{ $album->caption }}</p>
+
+                @if (Auth::check() && ($album->users_id === Auth::id() || Auth::user()->status == 1))
                         <a href="{{ route('albums.edit', $album->id) }}" class="knop">Bewerken</a>
                     @endif
 
@@ -109,6 +111,10 @@
             @else
                 @foreach($album->comments->sortByDesc('created_at') as $comment)
                     <div class="comment mb-3 border p-3">
+                        <img src="{{ $comment->user->profile_image ? asset('storage/profile_images/' . $comment->user->profile_image) : asset('storage/profile_images/default.webp') }}"
+                             alt="Profielafbeelding"
+                             class="rounded-circle"
+                             style="width: 30px; height: 30px; margin-right: 8px;">
                         <strong>{{ $comment->user->name }}</strong> zei op {{ $comment->created_at->format('d-m-Y H:i') }}:
                         <p id="comment-content-{{ $comment->id }}">{{ $comment->content }}</p>
 
@@ -136,6 +142,7 @@
                         @endif
                     </div>
                 @endforeach
+
             @endif
 
     </div>

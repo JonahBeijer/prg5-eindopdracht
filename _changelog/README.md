@@ -37,5 +37,5 @@
 * ik heb meer aan de opmaak gewerkt
 * een dit knop en verwijder knop gemaakt voor de comment section
 * een logo gemaakt
-* 
+* en een captions aangemaakt voor de gebruiker
 

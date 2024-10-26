@@ -11,7 +11,8 @@ class album extends Model
         'genre_id',
         'release_date',
         'images',
-        'users_id'
+        'users_id',
+        'caption'
     ];
 
     public function genre()

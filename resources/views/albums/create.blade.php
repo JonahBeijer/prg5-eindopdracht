@@ -84,6 +84,11 @@
             <label for="images">Afbeelding:</label>
             <input type="file" id="images" name="images" class="form-control" accept="image/*" required>
         </div>
+        <div class="form-group">
+            <label for="caption">Caption:</label>
+            <input type="text" id="caption" name="caption" class="form-control" required>
+        </div>
+
         <button type="submit" class="knop">Voeg Album Toe</button>
     </form>
 </div>

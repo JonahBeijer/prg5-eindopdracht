@@ -101,8 +101,13 @@
                     <img src="{{ asset('storage/' . $album->images) }}" class="card-img-top" alt="{{ $album->album_name }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ $album->album_name }}</h5>
-                        <p class="card-text"><strong>Artiest:</strong> {{ $album->artist_name }}</p>
-                        <a href="{{ route('albums.show', $album->id) }}" class="knop">Bekijk Details</a>
+                        @php
+                            $words = explode(' ', $album->caption);
+                            $truncated = implode(' ', array_slice($words, 0, 7));
+                        @endphp
+                        <p class="card-text">{{ $truncated }}{{ count($words) > 7 ? '...' : '' }}</p>
+
+                        <a href="{{ route('albums.show', $album->id) }}" class="knop">Bekijk post</a>
                         @if (Auth::check() && ($album->users_id === Auth::id() || Auth::user()->status == 1))
                             <a href="{{ route('albums.edit', $album->id) }}" class="knop">Bewerken</a>
                         @endif

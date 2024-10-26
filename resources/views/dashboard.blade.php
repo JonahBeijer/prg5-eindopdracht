@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -8,11 +6,14 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"> <!-- Zorg ervoor dat het bestand in public/css staat -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <title>SpinShare</title>
-
-
 </head>
-<nav class="navbar navbar-expand-lg navbar-light  bg-white shadow-sm">
-    <img src="{{ asset('storage/images/logo spinshare.png') }}" alt="SpinShare Logo" style="width: 150px; height: auto;">
+<body>
+
+<!-- Navigatiebalk -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <a class="navbar-brand" href="#">
+        <img src="{{ asset('storage/images/logo spinshare.png') }}" alt="SpinShare Logo" style="width: 150px; height: auto;">
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -39,9 +40,9 @@
                     <span class="navbar-text">{{ Auth::user()->name }}</span>
                 </li>
                 <li class="nav-item">
-                    <form action="{{ route('logout') }}" method="POST">
+                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
                         @csrf
-                        <button type="submit" class="btn btn-link nav-link" style="display:inline; cursor: pointer;">Uitloggen</button>
+                        <button type="submit" class="btn btn-link nav-link" style="cursor: pointer;">Uitloggen</button>
                     </form>
                 </li>
             @else
@@ -56,26 +57,26 @@
     </div>
 </nav>
 
+<div class="container mt-4">
+    @auth
+        <h3>Huidige Profielfoto:</h3>
+        @if(Auth::user()->profile_image)
+            <img src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}" alt="Profielafbeelding" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
+        @else
+            <p>Geen profielfoto geüpload.</p>
+        @endif
 
-@auth
-    <!-- Weergave van de huidige profielfoto -->
-    <h3>Huidige Profielfoto:</h3>
-    @if(Auth::user()->profile_image)
-        <img src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}" alt="Profielafbeelding" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
-    @else
-        <p>Geen profielfoto geüpload.</p>
-    @endif
+        <!-- Formulier voor het uploaden van de profielfoto -->
+        <form method="POST" action="{{ route('profile.image.upload') }}" enctype="multipart/form-data" class="mt-3 col-4">
+            @csrf
+            <div class="form-group">
+                <label for="profile_image">Upload een Profielfoto:</label>
+                <input type="file" id="profile_image" name="profile_image" class="form-control" required>
+            </div>
+            <button type="submit" class="knop">Upload Profielfoto</button>
+        </form>
+    @endauth
+</div>
 
-    <!-- Formulier voor het uploaden van de profielfoto -->
-    <form method="POST" action="{{ route('profile.image.upload') }}" enctype="multipart/form-data">
-        @csrf
-        <div class="form-group">
-            <label for="profile_image">Upload een Profielfoto:</label>
-            <input type="file" id="profile_image" name="profile_image" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Upload Profielfoto</button>
-    </form>
-@endauth
-
-
-
+</body>
+</html>

@@ -94,6 +94,11 @@
                 </div>
             @endif
         </div>
+        <div class="form-group">
+            <label for="caption">Caption:</label>
+            <input type="text" id="caption" name="caption" value="{{ $album->caption }}" required class="form-control">
+        </div>
+
 
         <div class="d-flex justify-content  ">
             <button type="submit" class="knop">Update Album</button>
