@@ -32,3 +32,10 @@
 * heb voor de create page een veiligheid gemaakt zodat als iemand zonder account er op wilt word hij door gestuurd naar de login als hij de url aanpast want heb de knop gewoon uitgezet voor mensen zonder account
 * een comment sectie gemaakt met een controller, model en de view staat in show en natuurlijk een tabel in de database
 * alle onnodige dingen die ik met opdrachte heb gemaakt in de les verwijderd zodat ik beter overzicht heb
+
+## 26-10
+* ik heb meer aan de opmaak gewerkt
+* een dit knop en verwijder knop gemaakt voor de comment section
+* een logo gemaakt
+* 
+

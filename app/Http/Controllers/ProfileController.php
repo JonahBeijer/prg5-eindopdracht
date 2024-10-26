@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -36,6 +37,33 @@ class ProfileController extends Controller
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
+
+    /**
+     * Update the user's profile image.
+     */
+    /**
+     * Update the user's profile image.
+     */
+    public function updateProfileImage(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'profile_image' => 'required|image|mimetypes:image/jpeg,image/png,image/gif,image/webp|max:2048',
+        ]);
+
+        $user = $request->user();
+        $imageName = time() . '.' . $request->profile_image->extension();
+
+        // Sla de afbeelding op in de 'public/storage/profile_images' map
+        $path = $request->file('profile_image')->storeAs('profile_images', $imageName, 'public');
+
+        // Update de gebruiker met de nieuwe afbeeldingsnaam
+        $user->profile_image = $imageName;
+        $user->save();
+
+        return Redirect::route('profile.edit')->with('status', 'Profielafbeelding succesvol geüpload.');
+    }
+
+
 
     /**
      * Delete the user's account.

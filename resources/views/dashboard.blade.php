@@ -1,17 +1,18 @@
-{{-- resources/views/dashboard.blade.php --}}
-@extends('layouts.app')
 
-    <!DOCTYPE html>
+
+<!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet"> <!-- Zorg ervoor dat het bestand in public/css staat -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <title>Album Details</title>
-</head>
+    <title>SpinShare</title>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="{{ route('albums.index') }}">Albums</a>
+
+</head>
+<nav class="navbar navbar-expand-lg navbar-light  bg-white shadow-sm">
+    <img src="{{ asset('storage/images/logo spinshare.png') }}" alt="SpinShare Logo" style="width: 150px; height: auto;">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -19,11 +20,11 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('albums.index') }}">Alle Albums</a>
+                <a class="nav-link" href="{{ route('albums.index') }}">Albums</a>
             </li>
             @auth
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('albums.create') }}">Album Toevoegen</a>
+                    <a class="nav-link" href="{{ route('albums.create') }}">Post</a>
                 </li>
             @endauth
         </ul>
@@ -31,7 +32,11 @@
         <ul class="navbar-nav ml-auto">
             @auth
                 <li class="nav-item">
-                    <span class="navbar-text">Welkom, {{ Auth::user()->name }}</span>
+                    <img src="{{ Auth::user()->profile_image ? asset('storage/profile_images/' . Auth::user()->profile_image) : asset('storage/profile_images/default.webp') }}"
+                         alt="Profielafbeelding"
+                         class="rounded-circle"
+                         style="width: 30px; height: 30px; margin-right: 8px;">
+                    <span class="navbar-text">{{ Auth::user()->name }}</span>
                 </li>
                 <li class="nav-item">
                     <form action="{{ route('logout') }}" method="POST">
@@ -43,28 +48,34 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('login') }}">Inloggen</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('register') }}">Register</a>
+                </li>
             @endauth
         </ul>
     </div>
 </nav>
 
-@section('content')
-    <div class="container">
-        <h1>Welkom op de Dashboard Pagina</h1>
 
-        @auth
-            <p>Hallo, {{ Auth::user()->name }}! Je bent ingelogd.</p>
-        @endauth
+@auth
+    <!-- Weergave van de huidige profielfoto -->
+    <h3>Huidige Profielfoto:</h3>
+    @if(Auth::user()->profile_image)
+        <img src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}" alt="Profielafbeelding" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
+    @else
+        <p>Geen profielfoto geüpload.</p>
+    @endif
 
-        @guest
-            <p>Je bent niet ingelogd. <a href="{{ route('login') }}">Log in</a> of <a href="{{ route('register') }}">registreer</a> om verder te gaan.</p>
-        @endguest
-
-
-    </div>
-@endsection
-
-
+    <!-- Formulier voor het uploaden van de profielfoto -->
+    <form method="POST" action="{{ route('profile.image.upload') }}" enctype="multipart/form-data">
+        @csrf
+        <div class="form-group">
+            <label for="profile_image">Upload een Profielfoto:</label>
+            <input type="file" id="profile_image" name="profile_image" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Upload Profielfoto</button>
+    </form>
+@endauth
 
 
 

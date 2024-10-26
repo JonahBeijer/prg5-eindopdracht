@@ -38,6 +38,8 @@ Route::post('/albums', [AlbumController::class, 'store'])->name('albums.store');
 
 Route::get('/albums/{id}', [AlbumController::class, 'show'])->name('albums.show');
 Route::post('/albums/{album}/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comment.update');
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
 
 Route::get('albums/{id}/edit', [AlbumController::class, 'edit'])->name('albums.edit');
@@ -45,6 +47,8 @@ Route::put('albums/{id}', [AlbumController::class, 'update'])->name('albums.upda
 Route::patch('albums/{id}', [AlbumController::class, 'update'])->name('albums.update');
 Route::delete('albums/{id}', [AlbumController::class, 'destroy'])->name('albums.destroy');
 
+Route::post('/profile/upload', [ProfileController::class, 'upload'])->name('profile.upload');
+Route::post('/profile/image/upload', [ProfileController::class, 'updateProfileImage'])->name('profile.image.upload');
 
 
 

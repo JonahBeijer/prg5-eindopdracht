@@ -10,13 +10,7 @@
 <body>
 <x-navigation />
 
-<div class="container">
-    @auth
-        <button class="btn btn-primary">Exclusieve Inhoud</button>
-    @endauth
 
-    @yield('content')
-</div>
 
 <!-- In de navigatiebalk of menu -->
 <li>
