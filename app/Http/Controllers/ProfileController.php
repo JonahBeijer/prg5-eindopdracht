@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\album;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,15 +12,22 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+
+
     /**
      * Display the user's profile form.
      */
     public function edit(Request $request): View
     {
+        $user = $request->user(); // Huidige ingelogde gebruiker
+        $albums = Album::where('users_id', $user->id)->get(); // Albums van de ingelogde gebruiker
+
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
+            'albums' => $albums, // Geef de albums door aan de view
         ]);
     }
+
 
     /**
      * Update the user's profile information.
@@ -48,6 +55,8 @@ class ProfileController extends Controller
     {
         $request->validate([
             'profile_image' => 'required|image|mimetypes:image/jpeg,image/png,image/gif,image/webp|max:2048',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . Auth::id(),
         ]);
 
         $user = $request->user();
@@ -57,11 +66,14 @@ class ProfileController extends Controller
         $path = $request->file('profile_image')->storeAs('profile_images', $imageName, 'public');
 
         // Update de gebruiker met de nieuwe afbeeldingsnaam
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
         $user->profile_image = $imageName;
         $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'Profielafbeelding succesvol geüpload.');
     }
+
 
 
 

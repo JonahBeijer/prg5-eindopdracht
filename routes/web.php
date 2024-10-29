@@ -26,7 +26,6 @@ Route::get('/about-us', function() {
 })->name('about-us');
 
 
-Route::get('/products', [ProductController::class, 'index']);
 Route::get('/albums', [AlbumController::class, 'index'])->name('albums.index');
 
 
@@ -49,6 +48,9 @@ Route::delete('albums/{id}', [AlbumController::class, 'destroy'])->name('albums.
 
 Route::post('/profile/upload', [ProfileController::class, 'upload'])->name('profile.upload');
 Route::post('/profile/image/upload', [ProfileController::class, 'updateProfileImage'])->name('profile.image.upload');
+Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
+
+Route::get('/albums', [AlbumController::class, 'index'])->name('albums.index')->middleware('auth');
 
 
 

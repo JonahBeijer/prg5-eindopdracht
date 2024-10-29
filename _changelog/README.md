@@ -39,3 +39,8 @@
 * een logo gemaakt
 * en een captions aangemaakt voor de gebruiker
 
+## 29-10
+* layout gemaakt voor navbar
+* profie wachtwoord aanpaasen
+* oneindig create klik aangepast
+
