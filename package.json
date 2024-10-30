@@ -3,7 +3,7 @@
     "type": "module",
     "scripts": {
         "build": "curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && composer install --no-dev && npm install && npm run build",
-        "start": "vendor/bin/heroku-php-nginx -C public"
+        "start": "php artisan serve --host 0.0.0.0 --port 10000"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",
