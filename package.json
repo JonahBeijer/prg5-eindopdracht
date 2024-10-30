@@ -1,13 +1,9 @@
 {
-
-
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "composer install --no-dev && npm install && npm run build",
+        "build": "npm install && npm run build",
         "start": "vendor/bin/heroku-php-nginx -C public"
-
-
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",
