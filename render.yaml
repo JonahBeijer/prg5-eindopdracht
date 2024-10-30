@@ -1,0 +1,12 @@
+version: 1
+services:
+  - type: web
+    name: laravel-app
+    env: php                # Zorg ervoor dat je PHP instelt
+    plan: free
+    buildCommand: |
+      curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
+      composer install --no-dev && \
+      npm install && \
+      npm run build
+    startCommand: vendor/bin/heroku-php-nginx -C public
