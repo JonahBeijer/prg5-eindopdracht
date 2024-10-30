@@ -2,7 +2,8 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "npm install && npm run build-assets",
+        "build": "composer install --no-dev && npm install && npm run build-assets",
+
         "start": "vendor/bin/heroku-php-nginx -C public"
     },
 
