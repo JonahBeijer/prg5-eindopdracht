@@ -47,3 +47,4 @@
 ## 30-10
 * profiel is uitgewerkt met eigen albums
 * bezig met de aan en knop met admin voor gebruikers
+* geprobeerd met Render website live zetten is helaas niet gelukt
