@@ -40,7 +40,15 @@
         <button type="submit" class="knop" onclick="disableButton(this)">Voeg Album Toe</button>
     </form>
 </div>
-
+    @if ($errors->any())
+        <div class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+            <ul class="space-y-1">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 </form>
 
 <script>

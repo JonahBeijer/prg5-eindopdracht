@@ -41,6 +41,9 @@
 
 ## 29-10
 * layout gemaakt voor navbar
-* profie wachtwoord aanpaasen
+* profiel wachtwoord aanpassen
 * oneindig create klik aangepast
 
+## 30-10
+* profiel is uitgewerkt met eigen albums
+* bezig met de aan en knop met admin voor gebruikers

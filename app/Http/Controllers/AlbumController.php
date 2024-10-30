@@ -18,7 +18,7 @@ class AlbumController extends Controller
         $genres = Genre::all();
         $searchTerm = $request->input('search');
 
-        $albumsQuery = Album::with('user', 'genre'); // Laad de relaties in
+        $albumsQuery = Album::with('user',  'genre'); // Laad de relaties in
 
         // Zoek naar albums op basis van album- of artiestennamen of gebruikersnamen
         if ($searchTerm) {

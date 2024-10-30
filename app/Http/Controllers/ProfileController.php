@@ -97,4 +97,14 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function toggleStatus(User $user)
+    {
+        // Toggle de status
+        $user->status = !$user->status; // of gebruik een specifieke logica voor de status
+        $user->save();
+
+        return redirect()->back()->with('status', 'Gebruikersstatus succesvol gewijzigd.');
+    }
+
 }

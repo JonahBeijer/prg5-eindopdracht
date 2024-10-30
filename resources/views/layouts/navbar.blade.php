@@ -23,7 +23,7 @@
             </li>
             @auth
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('albums.create') }}">Post</a>
+                    <a class="nav-link" href="{{ route('albums.create') }}">Create post</a>
                 </li>
             @endauth
         </ul>
@@ -31,7 +31,7 @@
             @auth
                 <li class="nav-item d-flex align-items-center">
                     <!-- Link rond de profielafbeelding en naam naar de dashboard pagina -->
-                    <a href="{{ route('dashboard') }}" class="d-flex align-items-center" style="text-decoration: none;">
+                    <a href="{{ route('profile.edit') }}" class="d-flex align-items-center" style="text-decoration: none;">
                         <img src="{{ Auth::user()->profile_image ? asset('storage/profile_images/' . Auth::user()->profile_image) : asset('storage/profile_images/default.webp') }}"
                              alt="Profielafbeelding"
                              class="rounded-circle"

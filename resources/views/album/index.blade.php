@@ -52,7 +52,7 @@
                             <p class="card-text">{{ $truncated }}{{ count($words) > 7 ? '...' : '' }}</p>
 
                             <a href="{{ route('albums.show', $album->id) }}" class="knop">Bekijk post</a>
-                            @if (Auth::check() && ($album->users_id === Auth::id() || Auth::user()->status == 1))
+                            @if (Auth::user()->status == 1)
                                 <a href="{{ route('albums.edit', $album->id) }}" class="knop">Bewerken</a>
                             @endif
                         </div>
