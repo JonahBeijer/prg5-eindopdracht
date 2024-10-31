@@ -2,7 +2,7 @@
 
 <div class="container mt-4" >
     @auth
-        {{-- Profielfoto sectie --}}
+
         <div class="mb-4">
             <h3 class="text-center mb-4">Huidige Profielfoto:</h3>
             <div class="text-center mb-3">
@@ -101,5 +101,3 @@
 </div>
 
 
-</body>
-</html>

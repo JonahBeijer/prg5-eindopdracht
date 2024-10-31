@@ -1,6 +1,15 @@
 @include('layouts.navbar')
 
 <body>
+@if ($errors->any())
+    <div class="alert alert-danger mt-2">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <div class="container mt-4">
     <div class="row row-cols-3 justify-content-center">
         <div class="col mb-3">
@@ -44,16 +53,6 @@
                         <button type="submit" class="knop" onclick="disableButton(this)">Plaats Reactie</button>
                     </form>
 
-                    <!-- Weergave van foutmeldingen -->
-                    @if ($errors->any())
-                        <div class="alert alert-danger mt-2">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
                 </div>
             </div>
         @else

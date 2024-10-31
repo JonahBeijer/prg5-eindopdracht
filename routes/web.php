@@ -7,11 +7,9 @@ use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+Route::get('/', [AlbumController::class, 'showRecentAlbum'])->name('welcome');
 
-// Auth middleware voor alle routes die authenticatie vereisen
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -46,3 +44,6 @@ Route::delete('albums/{id}', [AlbumController::class, 'destroy'])->name('albums.
 Route::post('/profile/upload', [ProfileController::class, 'upload'])->name('profile.upload');
 Route::post('/profile/image/upload', [ProfileController::class, 'updateProfileImage'])->name('profile.image.upload');
 Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
+
+
+

@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User;
 use App\Models\album;
 use App\Models\Genre;
 use Illuminate\Http\Request;
@@ -18,10 +17,9 @@ class AlbumController extends Controller
         $genres = Genre::all();
         $searchTerm = $request->input('search');
 
-        // Begin met een query voor albums, inclusief relaties
+
         $albumsQuery = Album::with('user', 'genre');
 
-        // Zoek naar albums op basis van album- of artiestennamen of gebruikersnamen
         if ($searchTerm) {
             $albumsQuery->where(function ($query) use ($searchTerm) {
                 $query->where('album_name', 'LIKE', '%' . $searchTerm . '%')
@@ -32,12 +30,11 @@ class AlbumController extends Controller
             });
         }
 
-        // Filter albums op genre als dat is opgegeven
+
         if ($request->has('genre') && !empty($request->genre)) {
             $albumsQuery->where('genre_id', $request->genre);
         }
 
-        // Voeg filter toe voor actieve albums en haal de resultaten op
         $albums = $albumsQuery->where('is_active', 1)->get();
 
         return view('album.index', compact('genres', 'albums'));
@@ -83,9 +80,9 @@ class AlbumController extends Controller
 
         // Controleer of het bestand aanwezig is
         if ($request->hasFile('images')) {
-            // Afbeelding opslaan
-            $imagePath = $request->file('images')->store('images/albums', 'public'); // Sla de afbeelding op in de 'public/images/albums' map
-            // In je controller
+
+            $imagePath = $request->file('images')->store('images/albums', 'public');
+
             $albums = Album::with('user', 'genre')->get(); // Voeg ook genre toe als dat nodig is
 
 
@@ -115,7 +112,7 @@ class AlbumController extends Controller
      */
     public function show($id)
     {
-        // Haal het album op met het opgegeven ID, inclusief relaties
+
         $album = Album::with('user', 'genre')->find($id);
 
         // Controleer of het album bestaat
@@ -131,12 +128,13 @@ class AlbumController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+
     public function edit($id)
     {
-        $album = Album::findOrFail($id); // Haal het album op
-        $genres = Genre::all(); // Haal alle genres op
+        $album = Album::findOrFail($id);
+        $genres = Genre::all();
 
-        // Controleer of de ingelogde gebruiker de eigenaar is of een admin
+
         if ($album->users_id !== Auth::id() && Auth::user()->status != 1) {
             return redirect()->route('albums.index')->with('error', 'Je hebt geen toegang om dit album te bewerken.');
         }
@@ -209,8 +207,7 @@ class AlbumController extends Controller
     {
         $album = Album::findOrFail($id);
 
-        // Controleer of de ingelogde gebruiker de eigenaar is van het album
-        if ($album->users_id === Auth::id()) {  // Verander eventueel naar user_id als dat de juiste veldnaam is.
+        if ($album->users_id === Auth::id()) {
             $album->delete();
             return redirect()->route('profile.edit')->with('success', 'Album succesvol verwijderd.');
         }
@@ -220,8 +217,10 @@ class AlbumController extends Controller
     }
 
 
-
-
-
+    public function showRecentAlbum()
+    {
+        $album = Album::latest()->first();
+        return view('welcome', compact('album'));
+    }
 
 }

@@ -13,6 +13,6 @@ class admin
             return $next($request);
         }
 
-        return redirect('/'); // Of een andere route als de gebruiker geen admin is
+        return redirect('/');
     }
 }

@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet"> <!-- Zorg ervoor dat het bestand in public/css staat -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet"> >
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <title>SpinShare</title>
+    <link rel="icon" href="{{ asset('storage/images/logo bird.png') }}" type="image/png">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
