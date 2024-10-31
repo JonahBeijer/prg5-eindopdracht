@@ -65,7 +65,7 @@
     </form>
 
     <div class="d-flex mt-3">
-        <button type="submit" class="knop" onclick="disableButton(this)">Update Album</button>
+        <button type="submit" class="knop custom-gap" onclick="disableButton(this)">Update Album</button>
 
         <form action="{{ route(Auth::user()->status == 1 ? 'albums.admin.destroy' : 'albums.user.destroy', $album->id) }}" method="POST" onsubmit="return confirm('Weet je zeker dat je dit album wilt verwijderen?');">
             @csrf
@@ -73,6 +73,10 @@
             <button type="submit" class="knop">Verwijder Album</button>
         </form>
     </div>
+
+
+
+
 
 </div>
 </body>

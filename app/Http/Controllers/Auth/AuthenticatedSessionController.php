@@ -28,8 +28,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if (Auth::check()) {
+            return redirect()->route('profile.edit');
+        }
+
         return redirect()->intended(route('profile.edit', absolute: false));
     }
+
 
     /**
      * Destroy an authenticated session.
