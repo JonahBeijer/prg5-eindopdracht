@@ -1,7 +1,8 @@
 @include('layouts.navbar')
 
-<div class="container mt-4">
+<div class="container mt-4" >
     @auth
+        {{-- Profielfoto sectie --}}
         <div class="mb-4">
             <h3 class="text-center mb-4">Huidige Profielfoto:</h3>
             <div class="text-center mb-3">
@@ -17,6 +18,9 @@
                 <div class="mb-3">
                     <label for="profile_image" class="form-label">Upload een Profielfoto:</label>
                     <input type="file" id="profile_image" name="profile_image" class="form-control" required>
+                    @error('profile_image')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <button type="submit" class="knop w-100">Upload Profielfoto</button>
             </form>
@@ -28,29 +32,28 @@
 
 
 
-
-        <div class="row">
-            <!-- Gegevens Aanpassen Formulier -->
-            <div class="col-md-6">
-                <div class="p-4 bg-white shadow rounde">
-                @include('profile.partials.update-profile-information-form')
-            </div>
-            </div>
-            <!-- Wachtwoord Aanpassen Formulier -->
-            <div class="col-md-6">
-                <div class="p-4 bg-white shadow rounded">
-                    @include('profile.partials.update-password-form')
-                </div>
-            </div>
-        </div>
-
     @endauth
     </div>
 
+<div class="container mt-4" style="max-width: 1400px;">
+    <div class="row justify-content-center">
+
+        <div class="col-md-5">
+            <div class="p-3 bg-white shadow rounded">
+                @include('profile.partials.update-profile-information-form')
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="p-3 bg-white shadow rounded">
+                @include('profile.partials.update-password-form')
+            </div>
+        </div>
+    </div>
+</div>
 
 
-
-<div class="container mt-5">
+<div class="container mt-5 " >
     <h3 class="text-center">Mijn Albums:</h3>
     <div class="row justify-content-center">
         <div class="col-12 col-md-10">

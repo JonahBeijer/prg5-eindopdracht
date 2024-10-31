@@ -55,9 +55,12 @@ class ProfileController extends Controller
     {
         $request->validate([
             'profile_image' => 'required|image|mimetypes:image/jpeg,image/png,image/gif,image/webp|max:2048',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . Auth::id(),
-        ]);
+        ], [
+        'profile_image' => 'De afbeelding moet een geldig afbeeldingsformaat zijn.',
+
+    ]);
+
+
 
         $user = $request->user();
         $imageName = time() . '.' . $request->profile_image->extension();
@@ -66,9 +69,7 @@ class ProfileController extends Controller
         $path = $request->file('profile_image')->storeAs('profile_images', $imageName, 'public');
 
         // Update de gebruiker met de nieuwe afbeeldingsnaam
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->profile_image = $imageName;
+        $user->profile_image = $imageName; // Alleen de profielfoto bijwerken
         $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'Profielafbeelding succesvol geüpload.');
@@ -98,7 +99,7 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
-    public function toggleStatus(User $user)
+    public function toggleStatus( $user)
     {
         // Toggle de status
         $user->status = !$user->status; // of gebruik een specifieke logica voor de status
@@ -106,5 +107,6 @@ class ProfileController extends Controller
 
         return redirect()->back()->with('status', 'Gebruikersstatus succesvol gewijzigd.');
     }
+
 
 }

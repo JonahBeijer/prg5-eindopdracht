@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.knop {
+    background-color: #66aff0; /* Oorspronkelijke achtergrondkleur */
+    color: white; /* Kleur van de tekst */
+    border: 2px solid #66aff0; /* Border in dezelfde kleur als achtergrond */
+    padding: 5px 10px; /* Extra padding voor een grotere knop */
+    border-radius: 5px; /* Afgeronde hoeken */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtiele schaduw */
+    font-weight: bold; /* Vetgedrukte tekst */
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s; /* Voor een vloeiende overgang */
+}
+
+.knop:hover {
+    background-color: white; /* Achtergrondkleur bij hover */
+    color: #66aff0; /* Tekstkleur bij hover */
+    border-color: #66aff0; /* Randkleur bij hover */
+    box-shadow: 1px 6px 8px rgba(0, 0, 0, 0.15); /* Vergrote schaduw bij hover */
+    text-decoration: none;
+}
+
+.proffoto {
+    display: flex;
+    align-items: center;
+    margin-left: 5px; /* Verhoog de marge aan de linkerkant om naar rechts te verschuiven */
+
+}
+
+.proffoto img {
+    border-radius: 50%; /* Maakt de afbeelding rond */
+    margin-right: 7px; /* Vermindert de ruimte tussen de afbeelding en de tekst */
+    margin-bottom: -5px; /* Negatieve marge om de ruimte te verminderen */
+}
+
+.font-weight-bold {
+    font-weight: bold; /* Maak de naam vetgedrukt */
+    color: #333; /* Donkergrijze kleur voor de naam */
+    margin-top: 0; /* Verwijdert de bovenmarge voor betere uitlijning */
+}
+
+
+

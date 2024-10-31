@@ -2,32 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Album;
+use App\Models\album; // Zorg ervoor dat je de modelnaam correct schrijft
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
 class CommentController extends Controller
 {
-    public function store(Request $request, Album $album)
+    public function store(Request $request, Album $album) // Gebruik Album met een hoofdletter
     {
         $request->validate([
-            'content' => 'required|string',
+            'content' => 'required|string|max:500', // Voeg een maximale lengte toe
         ]);
 
-// Maak de comment aan en koppel deze aan het album en de ingelogde gebruiker
+        // Controleer of de gebruiker minstens 3 albumposts heeft gemaakt
+        $postCount = album::where('users_id', Auth::id())->count(); // Gebruik Album in plaats van album
+
+
+        if ($postCount < 3) {
+            return redirect()->back()->withErrors(['message' => 'Je moet minimaal 3 albumposts hebben gemaakt voordat je een reactie kunt plaatsen.']);
+        }
+
+        // Maak de comment aan en koppel deze aan het album en de ingelogde gebruiker
         $comment = $album->comments()->create([
-            'content' => $request->input('content'), // Hier gebruik je input() in plaats van direct
-            'user_id' => auth()->id(),
+            'content' => $request->input('content'),
+            'user_id' => Auth::id(),
         ]);
-
-
 
         return redirect()->route('albums.show', $album->id)->with('success', 'Reactie geplaatst!');
     }
-
-
 
     public function update(Request $request, Comment $comment)
     {
@@ -37,7 +40,7 @@ class CommentController extends Controller
         }
 
         $request->validate([
-            'content' => 'required|string|max:500',
+            'content' => 'required|string|max:500', // Zorg voor dezelfde validatie
         ]);
 
         $comment->update([
@@ -58,6 +61,4 @@ class CommentController extends Controller
 
         return redirect()->back()->with('status', 'Reactie verwijderd!');
     }
-
-
 }

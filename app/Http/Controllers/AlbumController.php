@@ -18,7 +18,8 @@ class AlbumController extends Controller
         $genres = Genre::all();
         $searchTerm = $request->input('search');
 
-        $albumsQuery = Album::with('user',  'genre'); // Laad de relaties in
+        // Begin met een query voor albums, inclusief relaties
+        $albumsQuery = Album::with('user', 'genre');
 
         // Zoek naar albums op basis van album- of artiestennamen of gebruikersnamen
         if ($searchTerm) {
@@ -31,16 +32,17 @@ class AlbumController extends Controller
             });
         }
 
-        // Filter albums op genre als het genre is opgegeven
+        // Filter albums op genre als dat is opgegeven
         if ($request->has('genre') && !empty($request->genre)) {
             $albumsQuery->where('genre_id', $request->genre);
         }
 
-        // Haal de albums op
-        $albums = $albumsQuery->get();
+        // Voeg filter toe voor actieve albums en haal de resultaten op
+        $albums = $albumsQuery->where('is_active', 1)->get();
 
         return view('album.index', compact('genres', 'albums'));
     }
+
 
 
 
@@ -61,14 +63,23 @@ class AlbumController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'album_name',
-            'artist_name' ,
-            'genre_id' ,
-            'release_date' ,
-            'images'=> 'required|image|mimes:jpeg,png,jpg,gif',
-            'caption',
-
+            'album_name' => 'required|string|max:255',
+            'artist_name' => 'required|string|max:255',
+            'genre_id' => 'required|integer',
+            'release_date' => 'required|date',
+            'images' => 'required|image|mimes:jpeg,png,jpg,gif',
+            'caption' => 'required|string|max:255',
+        ], [
+            'album_name.required' => 'Je moet een album naam invoeren.',
+            'artist_name.required' => 'Je moet een artiest naam invoeren.',
+            'genre_id.required' => 'Selecteer een genre.',
+            'release_date.required' => 'Voer een release datum in.',
+            'images.required' => 'Een afbeelding is verplicht.',
+            'images.image' => 'De afbeelding moet een geldig afbeeldingsformaat zijn.',
+            'caption.required' => 'Voer een caption in.',
         ]);
+
+
 
         // Controleer of het bestand aanwezig is
         if ($request->hasFile('images')) {
@@ -154,18 +165,28 @@ class AlbumController extends Controller
             'artist_name' => 'required|string|max:255',
             'genre_id' => 'required|integer',
             'release_date' => 'required|date',
-            'images' => 'nullable|image|mimes:jpeg,png,jpg,gif',// 'nullable' voor het veld 'images'
+            'images' => 'nullable|image|mimes:jpeg,png,jpg,gif', // Maak afbeeldingen optioneel
             'caption' => 'required|string|max:255',
+        ], [
+            'album_name.required' => 'Je moet een album naam invoeren.',
+            'artist_name.required' => 'Je moet een artiest naam invoeren.',
+            'genre_id.required' => 'Selecteer een genre.',
+            'release_date.required' => 'Voer een release datum in.',
+            'caption.required' => 'Voer een caption in.',
+            'images.image' => 'De afbeelding moet een geldig afbeeldingsformaat zijn.',
+
         ]);
 
-        $imagePath = $album->images; // Behoud de oude afbeelding
+        // Bewaar het oude afbeeldingspad
+        $imagePath = $album->images;
 
-        // Als er een nieuwe afbeelding wordt geüpload, sla die op
+        // Controleer of er een nieuwe afbeelding is geüpload
         if ($request->hasFile('images')) {
+            // Sla de nieuwe afbeelding op
             $imagePath = $request->file('images')->store('images/albums', 'public');
         }
 
-        // Update album met de nieuwe gegevens
+        // Update het album met de nieuwe gegevens
         $album->update([
             'album_name' => $request->album_name,
             'artist_name' => $request->artist_name,
@@ -173,11 +194,11 @@ class AlbumController extends Controller
             'release_date' => $request->release_date,
             'images' => $imagePath, // Bewaar nieuwe afbeelding of behoud de oude
             'caption' => $request->input('caption'),
-
         ]);
 
         return redirect()->route('albums.index')->with('success', 'Album bijgewerkt.');
     }
+
 
 
 
@@ -188,11 +209,18 @@ class AlbumController extends Controller
     {
         $album = Album::findOrFail($id);
 
-        // Verwijder het album
-        $album->delete();
+        // Controleer of de ingelogde gebruiker de eigenaar is van het album
+        if ($album->users_id === Auth::id()) {  // Verander eventueel naar user_id als dat de juiste veldnaam is.
+            $album->delete();
+            return redirect()->route('profile.edit')->with('success', 'Album succesvol verwijderd.');
+        }
 
-        return redirect()->route('albums.index')->with('success', 'Album succesvol verwijderd.');
+
+        return redirect()->route('albums.index')->with('error', 'Je hebt geen rechten om dit album te verwijderen.');
     }
+
+
+
 
 
 

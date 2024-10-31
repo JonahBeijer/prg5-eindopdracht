@@ -1,6 +1,6 @@
 <?php
 use App\Http\Controllers\AlbumController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\AdminAlbumController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
@@ -11,29 +11,26 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+// Auth middleware voor alle routes die authenticatie vereisen
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::middleware(\App\Http\Middleware\admin::class)->group(function () {
+        Route::get('/admin/albums', [AdminAlbumController::class, 'index'])->name('admin.albums');
+        Route::post('/admin/albums/{album}/toggle', [AdminAlbumController::class, 'toggleStatus'])->name('admin.albums.toggle');
+        Route::delete('/admin/albums/{album}', [AdminAlbumController::class, 'destroy'])->name('albums.admin.destroy');
+    });
+
+
 });
 
 
 
-Route::get('/about-us', function() {
-})->name('about-us');
-
-
 Route::get('/albums', [AlbumController::class, 'index'])->name('albums.index');
 
-
-Route::get('/albums/create', [AlbumController::class, 'create'])
-    ->name('albums.create')
-    ->middleware('auth');
-
+Route::get('/albums/create', [AlbumController::class, 'create'])->name('albums.create')->middleware('auth');
 Route::post('/albums', [AlbumController::class, 'store'])->name('albums.store');
 
 Route::get('/albums/{id}', [AlbumController::class, 'show'])->name('albums.show');
@@ -41,34 +38,11 @@ Route::post('/albums/{album}/comments', [CommentController::class, 'store'])->na
 Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comment.update');
 Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
-
 Route::get('albums/{id}/edit', [AlbumController::class, 'edit'])->name('albums.edit');
 Route::put('albums/{id}', [AlbumController::class, 'update'])->name('albums.update');
 Route::patch('albums/{id}', [AlbumController::class, 'update'])->name('albums.update');
-Route::delete('albums/{id}', [AlbumController::class, 'destroy'])->name('albums.destroy');
+Route::delete('albums/{id}', [AlbumController::class, 'destroy'])->name('albums.user.destroy');
 
 Route::post('/profile/upload', [ProfileController::class, 'upload'])->name('profile.upload');
 Route::post('/profile/image/upload', [ProfileController::class, 'updateProfileImage'])->name('profile.image.upload');
 Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
-
-Route::get('/albums', [AlbumController::class, 'index'])->name('albums.index')->middleware('auth');
-
-
-
-//"Controller Method (een controller met een speciefieke methode aan te roepen)
-//Route::get('/about-us', [PageController::class, 'aboutUs']);
-//
-//invoke controller (Een controller met een __invoke-methode kan worden gebruikt zonder expliciete methodeaanduiding.)
-//Hier is de PageController een enkelvoudige actiecontroller met een __invoke-methode.)
-//
-//Route::get('/about-us', PageController::class);
-//
-//namedroutes (routes een naam geven)
-//Route::get('/about-us', [PageController::class, 'aboutUs'])->name('about');
-//
-//Middleware ( voor authenticatie)
-//Route::get('/about-us', [PageController::class, 'aboutUs'])->middleware('auth');
-//
-//
-//via view routee (zonder controller)
-//Route::view('/about-us', 'about');"

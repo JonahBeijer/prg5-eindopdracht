@@ -6,7 +6,7 @@
         <div class="col mb-3">
             <div class="card h-100">
                 <p class="card-text">
-                    <small class="proffoto d-flex align-items-center" style="margin-bottom: -10px;"> <!-- Negatieve marge naar beneden -->
+                    <small class="proffoto d-flex align-items-center" style="margin-bottom: -10px;">
                         @if ($album->user)
                             <img src="{{ $album->user->profile_image ? asset('storage/profile_images/' . $album->user->profile_image) : asset('storage/profile_images/default.webp') }}"
                                  alt="Profielafbeelding"
@@ -15,7 +15,6 @@
                             <span class="font-weight-bold" style="color: #333; margin-top: 10px; margin-right: 7px;">{{ $album->user->name }}</span>
                         @endif
                     </small>
-
                 </p>
                 <img src="{{ asset('storage/' . $album->images) }}" class="card-img-top" alt="{{ $album->album_name }}">
                 <div class="card-body">
@@ -25,10 +24,6 @@
                     <p class="card-text"><strong>Release Datum:</strong> {{ date('d-m-Y', strtotime($album->release_date)) }}</p>
                     <p class="card-text"><strong>Caption:</strong> {{ $album->caption }}</p>
 
-                @if (Auth::check() && ($album->users_id === Auth::id() || Auth::user()->status == 1))
-                        <a href="{{ route('albums.edit', $album->id) }}" class="knop">Bewerken</a>
-                    @endif
-
                 </div>
             </div>
         </div>
@@ -36,64 +31,83 @@
 
     <!-- Comment Form -->
     <div class="comments-section">
+        <!-- Comment Form -->
         @auth
             <div class="comment-form card mb-4">
                 <div class="card-body">
                     <h5 class="card-title">Laat een reactie achter:</h5>
-                    <form action="{{ route('comments.store', $album->id) }}" method="POST">
+                    <form action="{{ route('comments.store', $album->id) }}" method="POST" id="commentForm">
                         @csrf
                         <div class="form-group">
                             <textarea name="content" id="content" class="form-control" rows="3" required></textarea>
                         </div>
-                        <button type="submit" class="knop">Plaats Reactie</button>
+                        <button type="submit" class="knop" onclick="disableButton(this)">Plaats Reactie</button>
                     </form>
+
+                    <!-- Weergave van foutmeldingen -->
+                    @if ($errors->any())
+                        <div class="alert alert-danger mt-2">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                 </div>
             </div>
         @else
             <p><a href="{{ route('login') }}">Log in</a> om een reactie achter te laten.</p>
         @endauth
 
-            <!-- Weergave van reacties -->
+
+
+        <!-- Weergave van reacties -->
             <h3>Reacties:</h3>
             @if($album->comments->isEmpty())
                 <p>Geen reacties nog.</p>
             @else
                 @foreach($album->comments->sortByDesc('created_at') as $comment)
-                    <div class="comment mb-3 border p-3">
-                        <img src="{{ $comment->user->profile_image ? asset('storage/profile_images/' . $comment->user->profile_image) : asset('storage/profile_images/default.webp') }}"
-                             alt="Profielafbeelding"
-                             class="rounded-circle"
-                             style="width: 30px; height: 30px; margin-right: 8px;">
-                        <strong>{{ $comment->user->name }}</strong> zei op {{ $comment->created_at->format('d-m-Y H:i') }}:
-                        <p id="comment-content-{{ $comment->id }}">{{ $comment->content }}</p>
+                    <div class="comment mb-4 border p-3" id="comment-{{ $comment->id }}">
+                        <div class="d-flex align-items-start">
+                            <img src="{{ $comment->user->profile_image ? asset('storage/profile_images/' . $comment->user->profile_image) : asset('storage/profile_images/default.webp') }}"
+                                 alt="Profielafbeelding"
+                                 class="rounded-circle me-2"
+                                 style="width: 40px; height: 40px; margin-right: 5px;">
+                            <div>
+                                <strong>{{ $comment->user->name }}</strong> zei op {{ $comment->created_at->format('d-m-Y H:i') }}:
+                                <p id="comment-content-{{ $comment->id }}">{{ $comment->content }}</p>
 
-                        <!-- Inline bewerkformulier (standaard verborgen) -->
-                        <form id="edit-form-{{ $comment->id }}" action="{{ route('comment.update', $comment->id) }}" method="POST" style="display: none;">
-                            @csrf
-                            @method('PUT')
-                            <div class="form-group">
-                                <textarea name="content" class="form-control" rows="3">{{ $comment->content }}</textarea>
+                                <!-- Inline bewerkformulier (standaard verborgen) -->
+                                <form id="edit-form-{{ $comment->id }}" action="{{ route('comment.update', $comment->id) }}" method="POST" style="display: none;">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="form-group mb-2">
+                                        <textarea name="content" class="form-control" rows="3">{{ $comment->content }}</textarea>
+                                    </div>
+
+                                    <div class="button-group">
+                                        <button type="submit" class="knop">Opslaan</button>
+                                        <button type="button" class="knop" onclick="cancelEdit({{ $comment->id }})">Annuleren</button>
+                                    </div>
+                                </form>
+
+                                <!-- Bewerken en Verwijderen knoppen -->
+                                @if (Auth::check() && ($comment->user_id === Auth::id() || Auth::user()->status == 1))
+                                    <div class="mt-2 button-group" id="action-buttons-{{ $comment->id }}">
+                                        <button class="knop" onclick="editComment({{ $comment->id }})">Bewerken</button>
+                                        <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="knop" onclick="return confirm('Weet je zeker dat je deze reactie wilt verwijderen?');">Verwijder</button>
+                                        </form>
+                                    </div>
+                                @endif
                             </div>
-                            <button type="submit" class="knop">Opslaan</button>
-                            <button type="button" class="knop" onclick="cancelEdit({{ $comment->id }})">Annuleren</button>
-                        </form>
-
-                        <!-- Bewerken knop -->
-                        @if (Auth::check() && ($comment->user_id === Auth::id() || Auth::user()->status == 1))
-                            <button class="knop" onclick="editComment({{ $comment->id }})">Bewerken</button>
-
-                            <!-- Verwijder knop -->
-                            <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="knop" onclick="return confirm('Weet je zeker dat je deze reactie wilt verwijderen?');">Verwijder</button>
-                            </form>
-                        @endif
+                        </div>
                     </div>
                 @endforeach
-
             @endif
-
     </div>
 </div>
 
@@ -101,39 +115,31 @@
     function editComment(commentId) {
         // Toon het bewerkformulier
         document.getElementById('edit-form-' + commentId).style.display = 'block';
+        // Verberg de oorspronkelijke content
+        document.getElementById('comment-content-' + commentId).style.display = 'none';
+        // Verberg de bewerk- en verwijderknoppen
+        document.getElementById('action-buttons-' + commentId).style.display = 'none';
     }
 
     function cancelEdit(commentId) {
         // Verberg het bewerkformulier
         document.getElementById('edit-form-' + commentId).style.display = 'none';
+        // Toon de oorspronkelijke content weer
+        document.getElementById('comment-content-' + commentId).style.display = 'block';
+        // Toon de bewerk- en verwijderknoppen weer
+        document.getElementById('action-buttons-' + commentId).style.display = 'flex';
     }
 
-    function deleteComment(commentId) {
-        // Bevestiging voordat de reactie wordt verwijderd
-        const confirmation = confirm('Weet je zeker dat je deze reactie wilt verwijderen?');
-        if (confirmation) {
-            // AJAX-aanroep om de reactie te verwijderen
-            $.ajax({
-                url: '/comments/' + commentId, // De URL naar de comment destroy route
-                type: 'DELETE', // Type verzoek
-                data: {
-                    _token: '{{ csrf_token() }}' // Voeg CSRF-token toe
-                },
-                success: function(response) {
-                    // Als de verwijdering succesvol is, verwijder de comment uit de DOM
-                    $('#comment-' + commentId).remove();
-                    alert('Reactie succesvol verwijderd!');
-                },
-                error: function(xhr) {
-                    // Als er een fout optreedt
-                    alert('Er is een fout opgetreden. Probeer het opnieuw.');
-                }
-            });
-        }
-    }
+
+    document.getElementById('commentForm').onsubmit = function() {
+        const button = document.querySelector('#commentForm .knop');
+        button.disabled = true;
+        button.innerText = 'Verwerken...';
+    };
+
+
 </script>
 
 
 
 </body>
-</html>

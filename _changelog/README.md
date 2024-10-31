@@ -46,5 +46,12 @@
 
 ## 30-10
 * profiel is uitgewerkt met eigen albums
-* bezig met de aan en knop met admin voor gebruikers
+* bezig met de aan en knop met admin voor albums
 * geprobeerd met Render website live zetten is helaas niet gelukt
+
+## 31-10
+* admin dashboard is klaar en werkt met aan en uit knop voor albums
+* admin dashboard veilig gemaakt voor mensen die de url proberen te plakken
+* deeplinken is ook klaar, heb de gebruiker 3 post moeten doen voordat hij een reactie mag plaatsen
+* oneindig create klik aangepast bij reacties
+

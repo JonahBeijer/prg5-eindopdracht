@@ -6,9 +6,8 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"> <!-- Zorg ervoor dat het bestand in public/css staat -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <title>SpinShare</title>
-
-
 </head>
+<body>
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
     <a href="{{ route('welcome') }}">
         <img src="{{ asset('storage/images/logo spinshare.png') }}" alt="SpinShare Logo" style="width: 150px; height: auto;">
@@ -27,10 +26,16 @@
                 </li>
             @endauth
         </ul>
+
         <ul class="navbar-nav ml-auto">
             @auth
+
+                @if(Auth::user()->status == 1)
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.albums') }}">Admin Dashboard</a>
+                    </li>
+                @endif
                 <li class="nav-item d-flex align-items-center">
-                    <!-- Link rond de profielafbeelding en naam naar de dashboard pagina -->
                     <a href="{{ route('profile.edit') }}" class="d-flex align-items-center" style="text-decoration: none;">
                         <img src="{{ Auth::user()->profile_image ? asset('storage/profile_images/' . Auth::user()->profile_image) : asset('storage/profile_images/default.webp') }}"
                              alt="Profielafbeelding"
@@ -45,8 +50,8 @@
                         <button type="submit" class="btn btn-link nav-link" style="display: inline; cursor: pointer;">Uitloggen</button>
                     </form>
                 </li>
-            @else
 
+            @else
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('login') }}">Inloggen</a>
                 </li>
@@ -57,3 +62,4 @@
         </ul>
     </div>
 </nav>
+

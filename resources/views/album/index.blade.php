@@ -1,6 +1,6 @@
 
 
-    @include('layouts.navbar') <!-- Dit voegt de navigatiebalk toe -->
+    @include('layouts.navbar')
 
     <div class="container mt-4">
         <form method="GET" action="{{ route('albums.index') }}" class="mb-4">
@@ -52,9 +52,6 @@
                             <p class="card-text">{{ $truncated }}{{ count($words) > 7 ? '...' : '' }}</p>
 
                             <a href="{{ route('albums.show', $album->id) }}" class="knop">Bekijk post</a>
-                            @if (Auth::user()->status == 1)
-                                <a href="{{ route('albums.edit', $album->id) }}" class="knop">Bewerken</a>
-                            @endif
                         </div>
                     </div>
                 </div>
