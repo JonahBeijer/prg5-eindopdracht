@@ -9,6 +9,10 @@ require __DIR__.'/auth.php';
 
 Route::get('/', [AlbumController::class, 'showRecentAlbum'])->name('welcome');
 
+Route::get('/test-log', function () {
+    \Log::info('Test log message');
+    return 'Log message created!';
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
