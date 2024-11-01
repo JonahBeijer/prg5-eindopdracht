@@ -31,14 +31,13 @@ Route::get('/albums', [AlbumController::class, 'index'])->name('albums.index');
 Route::get('/albums/create', [AlbumController::class, 'create'])->name('albums.create')->middleware('auth');
 Route::post('/albums', [AlbumController::class, 'store'])->name('albums.store');
 
+Route::get('/albums/{id}', [AlbumController::class, 'show'])->name('albums.show');
 Route::post('/albums/{album}/comments', [CommentController::class, 'store'])->name('comments.store');
 Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comment.update');
 Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
 Route::get('albums/{id}/edit', [AlbumController::class, 'edit'])->name('albums.edit');
-Route::get('albums/{id}', [AlbumController::class, 'show'])->name('albums.show');
-Route::put('albums/{id}', [AlbumController::class, 'update'])->name('albums.update.put');
-
+Route::put('albums/{id}', [AlbumController::class, 'update'])->name('albums.update');
 Route::patch('albums/{id}', [AlbumController::class, 'update'])->name('albums.update');
 Route::delete('albums/{id}', [AlbumController::class, 'destroy'])->name('albums.user.destroy');
 
