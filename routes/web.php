@@ -42,10 +42,12 @@ Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->nam
 
 Route::get('albums/{id}/edit', [AlbumController::class, 'edit'])->name('albums.edit');
 Route::put('albums/{id}', [AlbumController::class, 'update'])->name('albums.update');
+Route::patch('albums/{id}', [AlbumController::class, 'update'])->name('albums.update');
 Route::delete('albums/{id}', [AlbumController::class, 'destroy'])->name('albums.user.destroy');
 
 Route::post('/profile/upload', [ProfileController::class, 'upload'])->name('profile.upload');
 Route::post('/profile/image/upload', [ProfileController::class, 'updateProfileImage'])->name('profile.image.upload');
+Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
 
 
 
