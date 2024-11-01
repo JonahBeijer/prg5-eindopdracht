@@ -46,7 +46,6 @@ Route::delete('albums/{id}', [AlbumController::class, 'destroy'])->name('albums.
 
 Route::post('/profile/upload', [ProfileController::class, 'upload'])->name('profile.upload');
 Route::post('/profile/image/upload', [ProfileController::class, 'updateProfileImage'])->name('profile.image.upload');
-Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
 
 
 
